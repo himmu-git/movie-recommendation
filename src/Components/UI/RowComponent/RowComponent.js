@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import axios from '../../config/axios.config';
+// import axios from '../../config/axios.config';
+import requests from '../../config/request';
 import CardComponent from '../CardComponent/CardComponent'
 import styles from './Row.module.css'
 function RowComponent(props) {
   const [moviesData, setMoviesData] = useState([]);
   async function fetchMoviesData(fetchUrl) {
-    let result = await axios.get(fetchUrl);
+    let result = await requests[fetchUrl]();
     setMoviesData(result.data.results)
   }
   useEffect(() => {
    fetchMoviesData(props.fetchUrl);
   }, [props.fetchUrl])
-  console.log(moviesData)
+  // console.log(moviesData)
   return (
     <>
       <h2 className={`${styles.row_title}`}>{props.title}<span className={styles.icon}></span></h2>
