@@ -1,7 +1,14 @@
 import './App.css';
 import styles from './App.module.css'
-import axios from 'axios';
+import axios from './Components/config/axios.config';
 import { useEffect, useRef, useState } from 'react';
+import WrapperContainer from './Components/UI/WrapperContainer/WrapperContainer';
+import SearchComponent from './Components/SearchComponent/SearchComponent';
+import GenreComponent  from './Components/GenreComponent/GenreComponent'
+import TopNavBarComponent from './Components/UI/TopNavBarComponent/TopNavBarComponent';
+import RowComponent from './Components/UI/RowComponent/RowComponent';
+import requests from './Components/config/request';
+import { requestValue } from './Components/constants/rowConstants';
 
 function App() {
   const apiKey = "4cd955b418acfcdc03cb4d730d310eba";
@@ -18,7 +25,7 @@ function App() {
   }
   const getSearchData = async (event) => {
     if (!event.target.value) return;
-    const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${event.target.value}&page=1&include_adult=true`;
+    const url = `search/movie?api_key=${apiKey}&language=en-US&query=${event.target.value}&page=1&include_adult=true`;
     const data = await axios.get(url)
     setSearchMoviesData(data.data.results);
     // console.log(data.data.results)
@@ -36,15 +43,9 @@ function App() {
   }
   const onKeySearch = debounce(getSearchData, 1000);
   console.log(searchMoviesData);
-
-  useEffect(() => {
-    getGenreList();
-    return () => {
-    };
-  }, []);
   return (
     <>
-      <div className={styles.app_main_classs}>
+      {/* <div className={styles.app_main_classs}>
         <label>Search Movies</label>
         <input type="search" onKeyUp={onKeySearch} />
       </div>
@@ -52,7 +53,8 @@ function App() {
         {searchMoviesData.map((result, index) => {
           return (<div key={index} className={styles.cards}>
             <div>
-              <img src={`${baseImgUrl}${result.poster_path}`} className={styles.imgClass} alt="poster " />
+            {result.poster_path && <img src={`${baseImgUrl}${result.poster_path}`} className={styles.imgClass} alt="poster " />}
+             {!result.poster_path && <div className={styles.imgClass}> </div>}
             </div>
             <div>
               <h2>
@@ -65,7 +67,20 @@ function App() {
           </div>)
         })
         }
-      </div>
+      </div> */}
+      <WrapperContainer styles={styles.wrapper}>
+        {/* <TopNavBarComponent></TopNavBarComponent>
+        <SearchComponent/>
+        <GenreComponent/> */}
+        <TopNavBarComponent/>
+        <GenreComponent/> 
+        {
+          requestValue.map((element)=>{
+            return <RowComponent key={element.title} title={element.title} fetchUrl={requests[element.requestUrl]} />
+          })
+        }
+
+      </WrapperContainer>
     </>
   );
 }

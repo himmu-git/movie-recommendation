@@ -1,0 +1,16 @@
+.card {
+    /* width: 100%; */
+    margin-right: 1%;
+    cursor: pointer;
+}
+.poster {
+    object-fit: contain;
+    width: 100%;
+    min-width: 200px;
+    min-height: 280px;
+    aspect-ratio: 4 / 5;
+    transition: transform ease-in-out 450ms;
+}
+.poster:hover{
+    transform: scale(1.1);
+}
